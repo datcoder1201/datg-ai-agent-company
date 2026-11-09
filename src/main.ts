@@ -77,13 +77,26 @@ labels.domElement.className = "labels";
 stage.appendChild(labels.domElement);
 
 function applyPerfMode(): void {
-  const ratio = isTurbo ? Math.min(devicePixelRatio, 1.25) : Math.min(devicePixelRatio, 1.75);
+  const ratio = isTurbo ? 1.0 : Math.min(devicePixelRatio, 1.5);
   renderer.setPixelRatio(ratio);
+  renderer.shadowMap.enabled = !isTurbo;
+  key.castShadow = !isTurbo;
+  renderer.toneMapping = isTurbo ? THREE.NoToneMapping : THREE.ACESFilmicToneMapping;
+  scene.traverse((obj) => {
+    if ((obj as THREE.Mesh).isMesh) {
+      const mesh = obj as THREE.Mesh;
+      if (Array.isArray(mesh.material)) {
+        mesh.material.forEach((m) => { m.needsUpdate = true; });
+      } else if (mesh.material) {
+        mesh.material.needsUpdate = true;
+      }
+    }
+  });
   if (perfToggle) {
-    perfToggle.textContent = isTurbo ? "⚡ TURBO" : "💎 HD";
-    perfToggle.title = isTurbo ? "Chế độ Siêu Mượt 60+ FPS (Nhấp để bật HD)" : "Chế độ Sắc Nét HD (Nhấp để bật Siêu Mượt)";
-    perfToggle.style.color = isTurbo ? "#38bdf8" : "#a855f7";
-    perfToggle.style.borderColor = isTurbo ? "#38bdf8" : "#a855f7";
+    perfToggle.textContent = isTurbo ? "⚡ MAX TURBO" : "💎 ĐỒ HỌA HD";
+    perfToggle.title = isTurbo ? "Chế độ Siêu Tốc Cực Mượt 120 FPS (Tắt bóng đổ, GPU 1:1)" : "Chế độ Đồ Họa HD (Bóng đổ chi tiết)";
+    perfToggle.style.color = isTurbo ? "#38bdf8" : "#c084fc";
+    perfToggle.style.borderColor = isTurbo ? "#38bdf8" : "#c084fc";
   }
 }
 if (perfToggle) {
@@ -784,12 +797,12 @@ renderer.setAnimationLoop(() => {
   }
   stepFlight(performance.now());
   controls.update();
-  fitScreens();
   renderer.render(scene, camera);
-  tvLayer.render(tvScene, camera);
-  labels.render(scene, camera);
   labelTimer += dt;
   if (labelTimer >= 0.033) {
+    fitScreens();
+    tvLayer.render(tvScene, camera);
+    labels.render(scene, camera);
     agents.layoutLabels(innerWidth, innerHeight, labelTimer, [office.ceo.speechBubble]);
     labelTimer = 0;
   }

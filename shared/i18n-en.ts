@@ -1,4 +1,10 @@
 export const EN: Record<string, string> = {
+  "Claude Code CLI (Trực ban)": "Claude Code CLI (On Standby)",
+  "Sẵn sàng nhận lệnh kiến trúc và phát triển phần mềm": "Ready for software architecture and development commands",
+  "Đã cài đặt Hook điều khiển & Sẵn sàng nhận lệnh": "Control Hook installed & Ready for commands",
+  "OpenAI Codex (Trực ban)": "OpenAI Codex (On Standby)",
+  "Sẵn sàng nhận lệnh tự động hóa và code": "Ready for automation and code generation commands",
+  "Đang trực ban, sẵn sàng tiếp nhận tác vụ": "On standby, ready to receive tasks",
   "Không tìm thấy biên nhận trên máy đích; kiểm tra trong ứng dụng gốc trước khi thao tác lại": "No receipt found on the target machine; check the original app before trying again",
   "Duyệt quyền": "Approve permissions",
   "Trả lời câu hỏi": "Answer questions",

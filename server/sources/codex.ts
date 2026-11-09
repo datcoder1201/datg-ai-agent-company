@@ -1,5 +1,6 @@
 import { L } from "../../shared/i18n.ts";
 import { open, readdir } from "node:fs/promises";
+import { existsSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import type { AgentInfo, AgentState, MachineId, PendingQuestion } from "../../shared/types.ts";
@@ -10,7 +11,7 @@ import { canonicalPath, collectActivity } from "./activity.ts";
 import { codexSentMessages } from "./messages.ts";
 
 const ROOT = path.join(os.homedir(), ".codex", "sessions");
-const VISIBLE_MS = 2 * 60 * 60_000;
+const VISIBLE_MS = 7 * 86_400_000;
 const ACTIVE_MS = 3 * 60_000;
 const headCache = new Map<string, { id: string; cwd: string; prompt: string; originator: string; model: string; branch: string; progress: string; parentId: string | null; agentPath: string; ownStart: number }>();
 
@@ -36,9 +37,12 @@ function dayDir(d: Date): string {
 
 async function recentRollouts(sinceMs: number): Promise<{ file: string; updatedAt: number; records: any[] }[]> {
   const out: { file: string; updatedAt: number; records: any[] }[] = [];
-  const today = new Date();
-  const yesterday = new Date(today.getTime() - 86_400_000);
-  for (const dir of [dayDir(today), dayDir(yesterday)]) {
+  const days: string[] = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(Date.now() - i * 86_400_000);
+    days.push(dayDir(d));
+  }
+  for (const dir of days) {
     for (const name of await readdir(dir).catch(() => [] as string[])) {
       if (!name.endsWith(".jsonl")) continue;
       const file = path.join(dir, name);
@@ -236,6 +240,26 @@ export async function readCodex(machine: MachineId): Promise<AgentInfo[]> {
       parentId: head.parentId ? `codex:${machine}:${head.parentId}` : null,
       updatedAt: new Date(updatedAt).toISOString(),
       pending: st.pending,
+    });
+  }
+  if (agents.length === 0 && existsSync(path.join(os.homedir(), ".codex"))) {
+    agents.push({
+      id: `codex:${machine}:core`,
+      sent: [],
+      app: "codex",
+      machine,
+      cwd: os.homedir(),
+      sessionId: "codex-engine",
+      title: L("OpenAI Codex (Trực ban)"),
+      model: "gpt-4o",
+      task: L("Sẵn sàng nhận lệnh tự động hóa và code"),
+      project: "DatG Corp",
+      role: "ai",
+      state: "idle",
+      detail: L("Đang trực ban, sẵn sàng tiếp nhận tác vụ"),
+      parentId: null,
+      updatedAt: new Date().toISOString(),
+      pending: null,
     });
   }
   return agents;

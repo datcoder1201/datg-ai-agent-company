@@ -272,6 +272,31 @@ export async function readClaude(machine: MachineId): Promise<AgentInfo[]> {
     agents.push(agent);
     if (transcript) agents.push(...(await readSubagents(agent, transcript, machine)));
   }
+  if (agents.length === 0) {
+    const claudeDir = path.join(HOME, ".claude");
+    const hookFile = path.join(HOME, ".msc-company", "bin", "claude-control-hook.mjs");
+    if (existsSync(claudeDir) || existsSync(hookFile)) {
+      agents.push({
+        id: `claude:${machine}:core`,
+        aliases: [],
+        sent: [],
+        app: "claude",
+        machine,
+        cwd: HOME,
+        sessionId: "claude-code-core",
+        title: L("Claude Code CLI (Trực ban)"),
+        model: "claude-3-7-sonnet",
+        task: L("Sẵn sàng nhận lệnh kiến trúc và phát triển phần mềm"),
+        project: "DatG Corp",
+        role: "ai",
+        state: "idle",
+        detail: L("Đã cài đặt Hook điều khiển & Sẵn sàng nhận lệnh"),
+        parentId: null,
+        updatedAt: new Date().toISOString(),
+        pending: null,
+      });
+    }
+  }
   return agents;
 }
 
