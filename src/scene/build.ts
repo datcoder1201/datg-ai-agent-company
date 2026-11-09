@@ -266,10 +266,10 @@ function buildMachineRoom(root: THREE.Object3D, def: (typeof MACHINE_ROOMS)[numb
   box(root, zone.x1 - zone.x0 - 0.2, 0.05, 0.05, (zone.x0 + zone.x1) / 2, WALL_H + 0.06, zone.z0 + 0.14, accentMat);
   buildServerNook(root, zone, def, index, accentMat);
   const machineTitle = def.machine === "WORKSTATION"
-    ? "DATG WORKSTATION • KHỐI ĐIỀU HÀNH CHỦ TỊCH ĐẠT"
+    ? "DATG AI CORE • PHÒNG ĐIỀU PHỐI DICON LAPTOP & DICON PC"
     : def.machine === "LAPTOP"
-      ? "DATG COMMAND PC • VĂN PHÒNG PHÓ CHỦ TỊCH"
-      : "DATG CLOUD SERVER • HẠ TẦNG AN NINH STRIX";
+      ? "DATG QUANT & TRADING LAB • KHỐI TÁC CHIẾN PHÓ CHỦ TỊCH"
+      : "DATG CLOUD SERVER • HẠ TẦNG AN NINH STRIX & DEV";
   htmlLabel(
     root,
     `<div class="room-sign" style="--accent:${def.accentCss}"><b>${machineTitle}</b></div>`,
@@ -278,14 +278,18 @@ function buildMachineRoom(root: THREE.Object3D, def: (typeof MACHINE_ROOMS)[numb
     2.6,
     zone.z0 + 0.4,
   );
-  if (def.machine === "LAPTOP") {
-    const pcPlate = canvasPlate("VĂN PHÒNG PHÓ CHỦ TỊCH & DICON PC", 3.2, 0.45, { size: 0.32, sub: "TỔ HỢP TÁC CHIẾN ĐA AGENT • DATG CORP" });
-    pcPlate.position.set((zone.x0 + zone.x1) / 2, 0.14, zone.z1 - 0.7);
-    root.add(pcPlate);
-  } else if (def.machine === "WORKSTATION") {
-    const wsPlate = canvasPlate("KHỐI ĐIỀU HÀNH CHỦ TỊCH ĐẠT & DICON LAPTOP", 3.4, 0.45, { size: 0.30, sub: "TỔNG CHỈ HUY HỆ SINH THÁI 418 AGENT" });
+  if (def.machine === "WORKSTATION") {
+    const wsPlate = canvasPlate("VĂN PHÒNG ĐIỀU PHỐI 2 DICON: LAPTOP & PC", 4.2, 0.55, { size: 0.30, sub: "ĐẠI BẢN DOANH 2 THƯ KÝ TRƯỞNG • KẾT NỐI TÁC CHIẾN 418 AGENT" });
     wsPlate.position.set((zone.x0 + zone.x1) / 2, 0.14, zone.z1 - 0.7);
     root.add(wsPlate);
+  } else if (def.machine === "LAPTOP") {
+    const pcPlate = canvasPlate("KHỐI TÁC CHIẾN ĐỊNH LƯỢNG & QUANT TRADING", 3.8, 0.5, { size: 0.30, sub: "81 AI TRADERS & QUANT OFFICERS • QUẢN TRỊ RỦI RO" });
+    pcPlate.position.set((zone.x0 + zone.x1) / 2, 0.14, zone.z1 - 0.7);
+    root.add(pcPlate);
+  } else if (def.machine === "SERVER") {
+    const srvPlate = canvasPlate("KHỐI KỸ THUẬT, AN NINH STRIX & DEV GATEWAY", 3.8, 0.5, { size: 0.30, sub: "71 AI ENGINEERS • STRIX PENTEST & OPENCLAW GATEWAY" });
+    srvPlate.position.set((zone.x0 + zone.x1) / 2, 0.14, zone.z1 - 0.7);
+    root.add(srvPlate);
   }
 }
 
@@ -315,19 +319,43 @@ function buildCeo(root: THREE.Group, panels: Panels): CeoAnimator {
     const post = box(root, 0.22, LED_BOTTOM.y, 0.22, side * ledW * 0.3, LED_BOTTOM.y / 2, LED_BOTTOM.z - 0.25, MAT.frame);
     post.userData.keep = true;
   }
-  const stage = cyl(root, 6.2, 6.2, 0.06, CEO_DESK.x, 0.13, CEO_DESK.z + 0.4, MAT.wood, 48);
-  stage.scale.set(1.15 * Math.min(SX, 1.2), 1, 0.55);
-  executiveDesk(root, CEO_DESK.x, CEO_DESK.z);
-  const chair = ergonomicChair(root, CEO_DESK.x, CEO_DESK.z - 0.9);
+  const stage = cyl(root, 10.0, 10.0, 0.06, CEO_DESK.x, 0.13, CEO_DESK.z + 0.4, MAT.wood, 48);
+  stage.scale.set(1.25 * Math.min(SX, 1.2), 1, 0.55);
+
+  // --- BÀN 1: CHỦ TỊCH ĐẠT (Bên Trái) ---
+  const ceoX = CEO_DESK.x - 2.8;
+  executiveDesk(root, ceoX, CEO_DESK.z);
+  const chair = ergonomicChair(root, ceoX, CEO_DESK.z - 0.9);
   chair.traverse((part) => { if ((part as THREE.Mesh).isMesh) part.userData.keep = true; });
-  const person = seatedPerson(root, CEO_DESK.x, CEO_DESK.z - 0.72);
-  const massage = massageChair(root, CEO_DESK.x - 4.35, CEO_DESK.z - 0.9);
-  deskLamp(root, CEO_DESK.x + 2.65, 0.82, CEO_DESK.z + 0.38, -0.4);
-  credenza(root, CEO_DESK.x, CEO_DESK.z - 2.55, 3.2);
-  const plate = canvasPlate("CHỦ TỊCH ĐẠT", 2.4, 0.5, { size: 0.42, sub: "FOUNDER & CHAIRMAN • DATG CORP" });
-  plate.position.set(CEO_DESK.x, 0.49, CEO_DESK.z + 0.88);
+  const person = seatedPerson(root, ceoX, CEO_DESK.z - 0.72);
+  deskLamp(root, ceoX - 1.3, 0.82, CEO_DESK.z + 0.38, 0.4);
+  credenza(root, ceoX, CEO_DESK.z - 2.55, 2.6);
+  const plate = canvasPlate("CHỦ TỊCH ĐẠT", 2.2, 0.48, { size: 0.40, sub: "FOUNDER & CHAIRMAN • DATG CORP" });
+  plate.position.set(ceoX, 0.49, CEO_DESK.z + 0.88);
   plate.rotation.x = -0.08;
   root.add(plate);
+
+  // --- BÀN 2: PHÓ CHỦ TỊCH (Bên Phải) ---
+  const vpX = CEO_DESK.x + 2.8;
+  executiveDesk(root, vpX, CEO_DESK.z);
+  const vpChair = ergonomicChair(root, vpX, CEO_DESK.z - 0.9);
+  vpChair.traverse((part) => { if ((part as THREE.Mesh).isMesh) part.userData.keep = true; });
+  seatedPerson(root, vpX, CEO_DESK.z - 0.72);
+  deskLamp(root, vpX + 1.3, 0.82, CEO_DESK.z + 0.38, -0.4);
+  credenza(root, vpX, CEO_DESK.z - 2.55, 2.6);
+  const vpPlate = canvasPlate("PHÓ CHỦ TỊCH", 2.2, 0.48, { size: 0.40, sub: "VICE CHAIRMAN • DATG CORP" });
+  vpPlate.position.set(vpX, 0.49, CEO_DESK.z + 0.88);
+  vpPlate.rotation.x = -0.08;
+  root.add(vpPlate);
+
+  // --- BIỂN HIỆU TRUNG TÂM PHÒNG LÃNH ĐẠO TỐI CAO ---
+  const suiteSign = canvasPlate("🏛️  PHÒNG LÃNH ĐẠO TỐI CAO • CHỦ TỊCH & PHÓ CHỦ TỊCH", 5.4, 0.55, { size: 0.30, sub: "HỘI ĐỒNG ĐIỀU HÀNH TỐI CAO • TẬP ĐOÀN DATG CORP" });
+  suiteSign.position.set(CEO_DESK.x, 0.14, CEO_DESK.z + 2.4);
+  root.add(suiteSign);
+
+  // 2 Ghế massage cho 2 Sếp
+  const massage = massageChair(root, CEO_DESK.x - 5.8, CEO_DESK.z - 0.9);
+  massageChair(root, CEO_DESK.x + 5.8, CEO_DESK.z - 0.9);
   for (const side of [-1, 1]) {
     const gx = side * 5.8 * Math.min(SX, 1.2);
     armchair(root, gx, -17.2, side * 0.9);

@@ -38,7 +38,7 @@ type ZoneSpec = Omit<Zone, "x0" | "x1" | "door"> & { x0: number; x1: number; doo
 
 const ZONE_SPECS: ZoneSpec[] = [
   { id: "reception", label: L("Phòng Tiếp Khách & Đối Ngoại"), x0: -30, x1: -13, z0: -24, z1: -13, floor: 0x6f5641, doorX: -16, side: "front" },
-  { id: "ceo", label: "", x0: -12.5, x1: 12.5, z0: -24, z1: -13, floor: 0x8b6a4c, doorX: 0, side: "front" },
+  { id: "ceo", label: L("Phòng Lãnh Đạo: Chủ Tịch & Phó Chủ Tịch"), x0: -12.5, x1: 12.5, z0: -24, z1: -13, floor: 0x8b6a4c, doorX: 0, side: "front" },
   { id: "meeting", label: L("Hội Đồng Chiến Lược DatG"), x0: 13, x1: 30, z0: -24, z1: -13, floor: 0x6f5641, doorX: 16, side: "front" },
   { id: "room1", label: "SERVER", x0: -30, x1: -12, z0: -11, z1: 4, floor: 0xd8cfc0, doorX: -21, side: "front" },
   { id: "room2", label: "WORKSTATION", x0: -9, x1: 9, z0: -11, z1: 4, floor: 0xd8cfc0, doorX: 0, side: "front" },

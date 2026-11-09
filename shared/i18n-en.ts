@@ -1405,4 +1405,5 @@ export const EN: Record<string, string> = {
   "Máy Phó Chủ Tịch (PC)": "Vice Chairman's Machine (PC)",
   "Máy Chủ Hạ Tầng DatG": "DatG Infrastructure Server",
   "PHÓ CHỦ TỊCH": "VICE CHAIRMAN",
+  "Phòng Lãnh Đạo: Chủ Tịch & Phó Chủ Tịch": "Executive Suite: Chairman & Vice Chairman",
 };
