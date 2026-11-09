@@ -1,0 +1,22 @@
+{
+  "name": "DatG Corp - Trụ Sở 418 AI Agent",
+  "short_name": "DatG Office",
+  "description": "Văn phòng 3D Điều hành 418 AI Agent DatG Corp",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0e15",
+  "theme_color": "#0a0e15",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/brands/antigravity.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/brands/antigravity.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}

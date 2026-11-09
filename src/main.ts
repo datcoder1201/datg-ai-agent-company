@@ -42,6 +42,9 @@ langToggle.addEventListener("click", () => {
   location.reload();
 });
 
+const perfToggle = document.getElementById("perf-toggle") as HTMLButtonElement | null;
+let isTurbo = localStorage.getItem("datg_turbo_mode") !== "off";
+
 const FIT_HALF_W = 32.5;
 const FIT_HALF_H = 23.6;
 const CAMERA_HOME = new THREE.Vector3(0, 62, 52);
@@ -54,10 +57,15 @@ const CARD_SWAP_MS = 180;
 const UI_EASE = "cubic-bezier(0.23, 1, 0.32, 1)";
 
 const stage = document.getElementById("stage")!;
-const renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+const renderer = new THREE.WebGLRenderer({
+  antialias: true,
+  powerPreference: "high-performance",
+  stencil: false,
+  depth: true,
+});
+renderer.setPixelRatio(isTurbo ? Math.min(devicePixelRatio, 1.25) : Math.min(devicePixelRatio, 1.75));
 renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.shadowMap.type = THREE.PCFShadowMap;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.05;
 stage.appendChild(renderer.domElement);
@@ -67,6 +75,25 @@ stage.appendChild(tvLayer.domElement);
 const labels = new CSS2DRenderer();
 labels.domElement.className = "labels";
 stage.appendChild(labels.domElement);
+
+function applyPerfMode(): void {
+  const ratio = isTurbo ? Math.min(devicePixelRatio, 1.25) : Math.min(devicePixelRatio, 1.75);
+  renderer.setPixelRatio(ratio);
+  if (perfToggle) {
+    perfToggle.textContent = isTurbo ? "⚡ TURBO" : "💎 HD";
+    perfToggle.title = isTurbo ? "Chế độ Siêu Mượt 60+ FPS (Nhấp để bật HD)" : "Chế độ Sắc Nét HD (Nhấp để bật Siêu Mượt)";
+    perfToggle.style.color = isTurbo ? "#38bdf8" : "#a855f7";
+    perfToggle.style.borderColor = isTurbo ? "#38bdf8" : "#a855f7";
+  }
+}
+if (perfToggle) {
+  applyPerfMode();
+  perfToggle.addEventListener("click", () => {
+    isTurbo = !isTurbo;
+    localStorage.setItem("datg_turbo_mode", isTurbo ? "on" : "off");
+    applyPerfMode();
+  });
+}
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x0a0e15);
@@ -87,7 +114,7 @@ scene.add(new THREE.HemisphereLight(0xfff1dc, 0x1b2433, 1.15));
 const key = new THREE.DirectionalLight(0xffe3bd, 2.1);
 key.position.set(-22, 60, 34);
 key.castShadow = true;
-key.shadow.mapSize.set(4096, 4096);
+key.shadow.mapSize.set(2048, 2048);
 key.shadow.bias = -0.0004;
 Object.assign(key.shadow.camera, { left: -40, right: 40, top: 34, bottom: -34, near: 1, far: 160 });
 scene.add(key);
@@ -736,6 +763,7 @@ function fitScreens(): void {
   }
 }
 
+let labelTimer = 0;
 const clock = new THREE.Clock();
 renderer.setAnimationLoop(() => {
   const dt = Math.min(clock.getDelta(), 0.1);
@@ -760,5 +788,9 @@ renderer.setAnimationLoop(() => {
   renderer.render(scene, camera);
   tvLayer.render(tvScene, camera);
   labels.render(scene, camera);
-  agents.layoutLabels(innerWidth, innerHeight, dt, [office.ceo.speechBubble]);
+  labelTimer += dt;
+  if (labelTimer >= 0.033) {
+    agents.layoutLabels(innerWidth, innerHeight, labelTimer, [office.ceo.speechBubble]);
+    labelTimer = 0;
+  }
 });
