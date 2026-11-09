@@ -406,10 +406,10 @@ function paperWeights(sample: MeetingSample, carried: boolean): { held: number; 
 }
 
 function bubbleText(sample: MeetingSample, agenda: MeetingAgenda): string | null {
-  if (sample.state === "meetOpen") return agenda.kind === "project" ? L("Khởi động dự án {0}. Bắt đầu họp!", clip(agenda.project)) : L("Họp nhanh về {0}.", clip(agenda.project));
-  if (sample.state === "meetOrder") return L("Giao việc: {0}", clip(agenda.title));
-  if (sample.state === "meetListen" && sample.time < 3.5) return L("Mời trình bày kế hoạch.");
-  if (sample.state === "meetApprove" && sample.time > 0.6) return L("Duyệt! Triển khai ngay.");
+  if (sample.state === "meetOpen") return agenda.kind === "project" ? L("Chủ tịch Đạt: Khởi động dự án {0}. Bắt đầu họp tác chiến!", clip(agenda.project)) : L("Chủ tịch Đạt: Họp chiến lược về {0}.", clip(agenda.project));
+  if (sample.state === "meetOrder") return L("Chủ tịch Đạt chỉ đạo: {0}", clip(agenda.title));
+  if (sample.state === "meetListen" && sample.time < 3.5) return L("Thư ký Dicon & các Agent báo cáo kế hoạch cho Sếp.");
+  if (sample.state === "meetApprove" && sample.time > 0.6) return L("Chủ tịch Đạt: Duyệt! Triển khai toàn tập đoàn ngay.");
   return null;
 }
 

@@ -265,14 +265,28 @@ function buildMachineRoom(root: THREE.Object3D, def: (typeof MACHINE_ROOMS)[numb
   const accentMat = new THREE.MeshStandardMaterial({ color: def.accent, emissive: def.accent, emissiveIntensity: 1.5 });
   box(root, zone.x1 - zone.x0 - 0.2, 0.05, 0.05, (zone.x0 + zone.x1) / 2, WALL_H + 0.06, zone.z0 + 0.14, accentMat);
   buildServerNook(root, zone, def, index, accentMat);
+  const machineTitle = def.machine === "WORKSTATION"
+    ? "DATG WORKSTATION • KHỐI ĐIỀU HÀNH CHỦ TỊCH ĐẠT"
+    : def.machine === "LAPTOP"
+      ? "DATG COMMAND PC • VĂN PHÒNG PHÓ CHỦ TỊCH"
+      : "DATG CLOUD SERVER • HẠ TẦNG AN NINH STRIX";
   htmlLabel(
     root,
-    `<div class="room-sign" style="--accent:${def.accentCss}"><b>${def.machine}</b></div>`,
+    `<div class="room-sign" style="--accent:${def.accentCss}"><b>${machineTitle}</b></div>`,
     "anchor",
     (zone.x0 + zone.x1) / 2,
     2.6,
     zone.z0 + 0.4,
   );
+  if (def.machine === "LAPTOP") {
+    const pcPlate = canvasPlate("VĂN PHÒNG PHÓ CHỦ TỊCH & DICON PC", 3.2, 0.45, { size: 0.32, sub: "TỔ HỢP TÁC CHIẾN ĐA AGENT • DATG CORP" });
+    pcPlate.position.set((zone.x0 + zone.x1) / 2, 0.14, zone.z1 - 0.7);
+    root.add(pcPlate);
+  } else if (def.machine === "WORKSTATION") {
+    const wsPlate = canvasPlate("KHỐI ĐIỀU HÀNH CHỦ TỊCH ĐẠT & DICON LAPTOP", 3.4, 0.45, { size: 0.30, sub: "TỔNG CHỈ HUY HỆ SINH THÁI 418 AGENT" });
+    wsPlate.position.set((zone.x0 + zone.x1) / 2, 0.14, zone.z1 - 0.7);
+    root.add(wsPlate);
+  }
 }
 
 const LED_HEIGHT = 9;
@@ -310,7 +324,7 @@ function buildCeo(root: THREE.Group, panels: Panels): CeoAnimator {
   const massage = massageChair(root, CEO_DESK.x - 4.35, CEO_DESK.z - 0.9);
   deskLamp(root, CEO_DESK.x + 2.65, 0.82, CEO_DESK.z + 0.38, -0.4);
   credenza(root, CEO_DESK.x, CEO_DESK.z - 2.55, 3.2);
-  const plate = canvasPlate("CEO", 2.0, 0.5, { size: 0.5, sub: L("GIÁM ĐỐC") });
+  const plate = canvasPlate("CHỦ TỊCH ĐẠT", 2.4, 0.5, { size: 0.42, sub: "FOUNDER & CHAIRMAN • DATG CORP" });
   plate.position.set(CEO_DESK.x, 0.49, CEO_DESK.z + 0.88);
   plate.rotation.x = -0.08;
   root.add(plate);
@@ -399,9 +413,12 @@ function buildMeeting(root: THREE.Object3D, panels: Panels): THREE.Group {
   conferenceTable(root, cx, room.tableZ, room.len);
   const head = ergonomicChair(root, room.head.x, room.head.z, room.head.facing);
   head.traverse((part) => { if ((part as THREE.Mesh).isMesh) part.userData.keep = true; });
-  const plate = canvasPlate(L("CHỦ TRÌ"), 0.62, 0.17, { size: 0.6 });
+  const plate = canvasPlate(L("CHỦ TỊCH ĐẠT"), 0.85, 0.18, { size: 0.52 });
   plate.position.set(room.head.x - 0.78, 0.9, room.tableZ + 0.6);
   root.add(plate);
+  const vpPlate = canvasPlate(L("PHÓ CHỦ TỊCH"), 0.85, 0.18, { size: 0.52 });
+  vpPlate.position.set(room.head.x + 0.78, 0.9, room.tableZ + 0.6);
+  root.add(vpPlate);
   mountScreen(root, "meeting", "meeting", panels.meeting.material, { x: cx, y: 1.1, z: -22.9, w: 6.2, h: 2.1 });
   bookshelf(root, z.x0 + 1.2, -23.4, 1.8);
   bookshelf(root, z.x1 - 1.2, -23.4, 1.8);
@@ -512,7 +529,7 @@ function buildGeneral(root: THREE.Object3D): void {
     plant(root, px, 6.7, 1.1, true);
     plant(root, px, 16.3, 1.1, true);
   }
-  htmlLabel(root, L("<div class=\"general-sign\"><b>VĂN PHÒNG CHUNG</b><span>KHÔNG GIAN LÀM VIỆC CHUNG TOÀN CÔNG TY</span></div>"), "anchor", 0, 2.6, 6.5);
+  htmlLabel(root, L("<div class=\"general-sign\"><b>ĐẠI BẢN DOANH DATG CORP</b><span>KHÔNG GIAN TÁC CHIẾN 418 AI AGENT SWARM</span></div>"), "anchor", 0, 2.6, 6.5);
 }
 
 function buildCommon(root: THREE.Object3D) {
@@ -598,7 +615,7 @@ function buildLobby(root: THREE.Object3D): void {
   for (const gx of [-2.1, 2.1]) gate(root, gx, 18.4);
   box(root, 0.12, 1.1, 2.4, -3.4, 0.55, 19.4, MAT.glass).castShadow = false;
   box(root, 0.12, 1.1, 2.4, 3.4, 0.55, 19.4, MAT.glass).castShadow = false;
-  const logo = canvasPlate("◭  AI AGENT", 4.6, 1.5, { size: 0.42, bg: "#2a2e35", sub: "COMPANY" });
+  const logo = canvasPlate("🏛️  DATG CORP", 4.8, 1.5, { size: 0.40, bg: "#1a1f29", sub: "418 AI AGENT SWARM • FOUNDER: SẾP ĐẠT" });
   logo.position.set(0, 0.13, 21.6);
   logo.rotation.x = -Math.PI / 2;
   root.add(logo);

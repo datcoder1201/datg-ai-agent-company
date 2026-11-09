@@ -11,23 +11,23 @@ interface DemoSeat {
 }
 
 const SEATS: DemoSeat[] = [
-  { app: "claude", machine: "WORKSTATION", project: "storefront", role: "frontend", title: "Checkout page redesign", steps: ["Editing src/checkout/Summary.tsx", "Running npm test", "Reading src/cart/store.ts"] },
-  { app: "codex", machine: "WORKSTATION", project: "storefront", role: "backend", title: "Payment webhook retries", steps: ["Editing api/webhooks/payment.ts", "Running pnpm vitest webhooks", "Searching for idempotency keys"] },
-  { app: "claude", machine: "WORKSTATION", project: "storefront", role: "test", title: "End-to-end checkout tests", steps: ["Running playwright test checkout", "Editing e2e/checkout.spec.ts"], question: { text: "Two flaky tests depend on a live payment sandbox. How should I proceed?", options: ["Mock the sandbox", "Keep live tests, mark them slow", "Skip them for now"] } },
-  { app: "antigravity", machine: "WORKSTATION", project: "storefront", role: "uiux", title: "Mobile navigation polish", steps: ["Adjusting spacing tokens", "Reviewing contrast ratios"] },
-  { app: "codex", machine: "LAPTOP", project: "mobile-app", role: "frontend", title: "Offline sync screen", steps: ["Editing app/sync/Queue.tsx", "Running expo lint"] },
-  { app: "claude", machine: "LAPTOP", project: "docs-site", role: "content", title: "Release notes for v2.4", steps: ["Writing docs/releases/2.4.md", "Checking links"] },
-  { app: "claude", machine: "LAPTOP", project: "mobile-app", role: "ai", title: "Smart reply prompts", steps: ["Evaluating prompt variants", "Editing prompts/reply.md"], question: { text: "Allow running the evaluation script that calls the API 200 times?", options: ["Allow", "Deny"] } },
-  { app: "codex", machine: "SERVER", project: "platform", role: "devops", title: "Zero-downtime deploy pipeline", steps: ["Editing .github/workflows/deploy.yml", "Running docker compose build"] },
-  { app: "claude", machine: "SERVER", project: "platform", role: "data", title: "Nightly analytics rollup", steps: ["Writing sql/rollup_daily.sql", "Running the migration dry run"] },
-  { app: "antigravity", machine: "SERVER", project: "platform", role: "system", title: "Log retention policy", steps: ["Reading logrotate config", "Updating retention to 30 days"] },
-  { app: "codex", machine: "SERVER", project: "platform", role: "backend", title: "Rate limiter for public API", steps: ["Editing src/limits/bucket.ts", "Running go test ./limits"] },
+  { app: "claude", machine: "WORKSTATION", project: "datg-core", role: "frontend", title: "Giao diện 3D Trụ Sở DatG Corp", steps: ["Coding Three.js Canvas UI", "Tối ưu render WebGL 60fps", "Kiểm định giao diện Impeccable"] },
+  { app: "codex", machine: "WORKSTATION", project: "openclaw-gateway", role: "backend", title: "OpenClaw AI Gateway 50+ kênh", steps: ["Mở WebSocket Telegram Relay", "Đồng bộ đa kênh", "Kiểm thử API Gateway"] },
+  { app: "claude", machine: "WORKSTATION", project: "strix-secops", role: "test", title: "Strix Autonomous AI Pentest", steps: ["Rà quét cổng VPS", "Kiểm tra mã hóa API keys"], question: { text: "Phát hiện port VPS chưa bật token bảo mật. Sếp Đạt có duyệt chặn ngay không?", options: ["Duyệt chặn ngay", "Đưa vào danh sách theo dõi", "Bỏ qua"] } },
+  { app: "antigravity", machine: "WORKSTATION", project: "datg-core", role: "uiux", title: "Bộ nhận diện 418 AI Agent", steps: ["Khắc logo Chủ tịch Đạt", "Hiệu chỉnh vật liệu Three.js"] },
+  { app: "codex", machine: "LAPTOP", project: "mql5-quant", role: "backend", title: "Phó Chủ tịch: EA Trading SMC Order Block", steps: ["Backtest chiến lược MT5 MQL5", "Kiểm tra rủi ro equity 1%"] },
+  { app: "claude", machine: "LAPTOP", project: "datg-docs", role: "content", title: "Phó Chủ tịch: Báo cáo Tác chiến Toàn Tập đoàn", steps: ["Soạn thảo hồ sơ chiến lược", "Cập nhật War Room"] },
+  { app: "claude", machine: "LAPTOP", project: "media-studio", role: "ai", title: "Phó Chủ tịch: Dựng video OpenMontage", steps: ["Render video Wan2.1 ComfyUI", "Nhân bản giọng nói GPT-SoVITS"], question: { text: "Phó Chủ tịch đề xuất: Kích hoạt pipeline render video ngắn TikTok/Reels tự động?", options: ["Chủ tịch Đạt duyệt ngay", "Yêu cầu chỉnh sửa kịch bản"] } },
+  { app: "codex", machine: "SERVER", project: "datg-infra", role: "devops", title: "Triển khai cụm VPS máy chủ DatG", steps: ["Cấu hình Tailscale Mesh VPN", "Khởi động Docker containers"] },
+  { app: "claude", machine: "SERVER", project: "datg-infra", role: "data", title: "TradingAgents Hedge Fund Sentiment", steps: ["Phân tích tin tức tài chính", "Cập nhật dữ liệu thị trường"] },
+  { app: "antigravity", machine: "SERVER", project: "datg-infra", role: "system", title: "Giám sát hệ sinh thái 418 Agent", steps: ["Kiểm tra CPU, RAM, GPU Nvidia", "Thực thi kiểm tra định kỳ"] },
+  { app: "codex", machine: "SERVER", project: "rea-reverse", role: "system", title: "Dịch ngược với Siêu Vũ Khí REA", steps: ["Bóc tách nhị phân PE/ELF", "Decompile bytecode an toàn"] },
 ];
 
 const MACHINES: { id: MachineId; os: string; cpuModel: string; cores: number; memTotal: number; diskTotal: number; lanIp: string; tailscaleIp: string }[] = [
-  { id: "WORKSTATION", os: "Windows 11 Pro", cpuModel: "16-core desktop CPU", cores: 32, memTotal: 64 * 2 ** 30, diskTotal: 2000 * 2 ** 30, lanIp: "192.168.1.20", tailscaleIp: "100.64.0.10" },
-  { id: "LAPTOP", os: "macOS 26", cpuModel: "8-core laptop CPU", cores: 8, memTotal: 16 * 2 ** 30, diskTotal: 512 * 2 ** 30, lanIp: "192.168.1.30", tailscaleIp: "100.64.0.11" },
-  { id: "SERVER", os: "Ubuntu 26.04", cpuModel: "6-core server CPU", cores: 12, memTotal: 32 * 2 ** 30, diskTotal: 1000 * 2 ** 30, lanIp: "192.168.1.40", tailscaleIp: "100.64.0.12" },
+  { id: "WORKSTATION", os: "Windows (Chủ tịch Đạt - Laptop HQ)", cpuModel: "Intel Core i5-10500H @ 2.50GHz (12 Cores)", cores: 12, memTotal: 24 * 2 ** 30, diskTotal: 512 * 2 ** 30, lanIp: "192.168.1.20", tailscaleIp: "100.64.0.10" },
+  { id: "LAPTOP", os: "Windows/PC (Phó Chủ tịch - Tác chiến HQ)", cpuModel: "AMD Ryzen 9 / Intel Core i9 (16 Cores)", cores: 16, memTotal: 32 * 2 ** 30, diskTotal: 1000 * 2 ** 30, lanIp: "192.168.1.30", tailscaleIp: "100.64.0.11" },
+  { id: "SERVER", os: "Ubuntu 24.04 (Hạ Tầng Strix Datacenter)", cpuModel: "AMD EPYC 32-Core Server", cores: 64, memTotal: 128 * 2 ** 30, diskTotal: 4000 * 2 ** 30, lanIp: "192.168.1.40", tailscaleIp: "100.64.0.12" },
 ];
 
 function wave(now: number, periodMs: number, offset: number): number {
@@ -95,10 +95,10 @@ export function demoQuota(now = Date.now()): QuotaSnapshot {
     connected: true,
     fetchedAt: new Date(now).toISOString(),
     rows: [
-      { app: "claude", account: "team@example.com", window: "5h", remaining: 64, resetsAt: reset(2) },
-      { app: "claude", account: "team@example.com", window: "Week", remaining: 81, resetsAt: reset(80) },
-      { app: "codex", account: "dev@example.com", window: "5h", remaining: 47, resetsAt: reset(3) },
-      { app: "codex", account: "dev@example.com", window: "Week", remaining: 72, resetsAt: reset(96) },
+      { app: "antigravity", account: "datg.founder.dat@example.com", window: "5h", remaining: 98, resetsAt: reset(4) },
+      { app: "claude", account: "dicon.orchestrator@example.com", window: "Week", remaining: 89, resetsAt: reset(84) },
+      { app: "codex", account: "quant.trader@example.com", window: "5h", remaining: 76, resetsAt: reset(2) },
+      { app: "codex", account: "strix.secops@example.com", window: "Week", remaining: 94, resetsAt: reset(96) },
     ],
   };
 }
@@ -106,19 +106,18 @@ export function demoQuota(now = Date.now()): QuotaSnapshot {
 export function demoSites(now = Date.now()): SiteStatus[] {
   const checkedAt = new Date(now).toISOString();
   return [
-    { url: "https://shop.example.com/", label: "shop.example.com", status: 200, ok: true, latencyMs: 140, checkedAt, note: "" },
-    { url: "https://docs.example.com/", label: "docs.example.com", status: 200, ok: true, latencyMs: 92, checkedAt, note: "" },
-    { url: "https://api.example.com/health", label: "api.example.com", status: 200, ok: true, latencyMs: 61, checkedAt, note: "" },
+    { url: "https://datgcorp.example.com/", label: "datgcorp.vn (Trụ sở số)", status: 200, ok: true, latencyMs: 28, checkedAt, note: "" },
+    { url: "https://trading.example.com/", label: "trading.datgcorp.vn (SMC Bot)", status: 200, ok: true, latencyMs: 35, checkedAt, note: "" },
+    { url: "https://api.example.com/health", label: "api.datgcorp.vn (Gateway)", status: 200, ok: true, latencyMs: 19, checkedAt, note: "" },
   ];
 }
 
 export function demoSkills(): SkillsSnapshot {
   const groups = [
-    { source: "Claude skills", count: 18, names: ["frontend-design", "code-review", "testing-patterns", "api-design", "release-notes"] },
-    { source: "Codex skills", count: 11, names: ["refactor", "migrations", "ci-fixes", "security-review"] },
-    { source: "Team skills", count: 7, names: ["brand-voice", "spacing", "onboarding"] },
+    { source: "Codex (DatG)", count: 345, names: ["datg-mql5-ea-quant-architect", "datg-rea-reverse-engineering", "datg-fastapi-backend-pro", "datg-ui-ux-pro-max", "datg-ecc-recipes"] },
+    { source: "Antigravity", count: 38, names: ["scroll-world", "impeccable", "hallmark", "taste-skill", "gsap-core"] },
   ];
-  return { connected: true, note: "", total: groups.reduce((sum, group) => sum + group.count, 0), groups };
+  return { connected: true, note: "", total: 383, groups };
 }
 
 export function demoProjects(now = Date.now()): ProjectsSnapshot {
@@ -128,10 +127,10 @@ export function demoProjects(now = Date.now()): ProjectsSnapshot {
     note: "",
     fetchedAt: new Date(now).toISOString(),
     repos: [
-      { name: "storefront", url: "https://github.com/example/storefront", isPrivate: false, isArchived: false, pushedAt: day(0), release: { tag: "v2.4.0", publishedAt: day(2) }, deploy: { environment: "production", state: "success", at: day(0) }, ci: "success" },
-      { name: "mobile-app", url: "https://github.com/example/mobile-app", isPrivate: false, isArchived: false, pushedAt: day(1), release: { tag: "v1.9.3", publishedAt: day(6) }, deploy: null, ci: "success" },
-      { name: "platform", url: "https://github.com/example/platform", isPrivate: false, isArchived: false, pushedAt: day(0), release: { tag: "v5.1.0", publishedAt: day(4) }, deploy: { environment: "production", state: "success", at: day(1) }, ci: "in_progress" },
-      { name: "docs-site", url: "https://github.com/example/docs-site", isPrivate: false, isArchived: false, pushedAt: day(3), release: null, deploy: null, ci: "success" },
+      { name: "C-ng-ty-c-ph-n-Dat-The-Gioi", url: "https://github.com/example/C-ng-ty-c-ph-n-Dat-The-Gioi", isPrivate: true, isArchived: false, pushedAt: day(0), release: { tag: "v3.0.0", publishedAt: day(2) }, deploy: { environment: "production", state: "success", at: day(0) }, ci: "success" },
+      { name: "datg-core", url: "https://github.com/example/datg-core", isPrivate: false, isArchived: false, pushedAt: day(1), release: { tag: "v1.2.0", publishedAt: day(4) }, deploy: null, ci: "success" },
+      { name: "mql5-quant", url: "https://github.com/example/mql5-quant", isPrivate: true, isArchived: false, pushedAt: day(0), release: { tag: "v2.1.0", publishedAt: day(3) }, deploy: { environment: "production", state: "success", at: day(1) }, ci: "success" },
+      { name: "strix-secops", url: "https://github.com/example/strix-secops", isPrivate: true, isArchived: false, pushedAt: day(2), release: null, deploy: null, ci: "success" },
     ],
   };
 }

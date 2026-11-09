@@ -29,23 +29,23 @@ interface RoomLink {
 }
 
 const NAV: [Destination, string, keyof typeof ICONS][] = [
-  ["office", L("Văn phòng"), "home"],
-  ["overview", L("Tổng quan"), "grid"],
-  ["github", "GitHub", "git"],
-  ["projects", L("Công việc"), "board"],
-  ["mail", L("Thư"), "mail"],
-  ["calendar", L("Lịch"), "calendar"],
-  ["automation", L("Hệ thống"), "auto"],
+  ["office", L("Văn phòng 3D"), "home"],
+  ["overview", L("War Room"), "grid"],
+  ["github", "GitHub DatG", "git"],
+  ["projects", L("Nhiệm vụ"), "board"],
+  ["mail", L("Hòm thư"), "mail"],
+  ["calendar", L("Lịch trình"), "calendar"],
+  ["automation", L("Hạ tầng"), "auto"],
   ["quota", L("Hạn mức AI"), "gauge"],
 ];
 const ROOMS: RoomLink[] = [
-  { zone: "room2", label: "WORKSTATION", icon: "machine", machine: "WORKSTATION", count: (agents) => busyOn(agents, "WORKSTATION") },
-  { zone: "room3", label: "LAPTOP", icon: "machine", machine: "LAPTOP", count: (agents) => busyOn(agents, "LAPTOP") },
-  { zone: "room1", label: "SERVER", icon: "machine", machine: "SERVER", count: (agents) => busyOn(agents, "SERVER") },
-  { zone: "training", label: L("Phòng đào tạo"), icon: "agent", count: (agents) => agents.filter((a) => a.state !== "idle" && trainingFocus(a)).length },
-  { zone: "meeting", label: L("Phòng họp"), icon: "chat", count: () => 0 },
-  { zone: "server", label: L("Phòng máy chủ"), icon: "project", count: () => 0 },
-  { zone: "general", label: L("Văn phòng chung"), icon: "target", count: () => 0 },
+  { zone: "room2", label: "Dev & OpenClaw", icon: "machine", machine: "WORKSTATION", count: (agents) => busyOn(agents, "WORKSTATION") },
+  { zone: "room3", label: "Trading & Media", icon: "machine", machine: "LAPTOP", count: (agents) => busyOn(agents, "LAPTOP") },
+  { zone: "room1", label: "Server Strix", icon: "machine", machine: "SERVER", count: (agents) => busyOn(agents, "SERVER") },
+  { zone: "training", label: L("AI Lab & Skills"), icon: "agent", count: (agents) => agents.filter((a) => a.state !== "idle" && trainingFocus(a)).length },
+  { zone: "meeting", label: L("Phòng Họp Chiến Lược"), icon: "chat", count: () => 0 },
+  { zone: "server", label: L("Phòng Máy Chủ"), icon: "project", count: () => 0 },
+  { zone: "general", label: L("Đại Bản Doanh 418 Agent"), icon: "target", count: () => 0 },
 ];
 const APP_LABELS: Record<string, string> = { claude: "Claude", codex: "Codex", antigravity: "Antigravity" };
 const QUOTA_ACCOUNTS = 6;

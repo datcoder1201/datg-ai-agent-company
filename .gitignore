@@ -4,5 +4,6 @@ dist
 .env.*
 *.log
 package-lock.json
+cloudflared.exe
 !.env.example
 .playwright-mcp

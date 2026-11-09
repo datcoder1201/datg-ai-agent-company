@@ -57,7 +57,7 @@ export function drawLed(p: CanvasPanel, snap: Snapshot | null = null): void {
   g.fillStyle = WHITE;
   g.textAlign = "center";
   font(g, 800, 42);
-  g.fillText("AI AGENT COMPANY", W / 2, H * 0.17);
+  g.fillText("DATG CORP - 418 AI AGENT HQ", W / 2, H * 0.17);
   if (!snap) {
     g.fillStyle = MUTED;
     font(g, 600, 28);
@@ -160,7 +160,7 @@ function drawMachineRows(g: CanvasRenderingContext2D, snap: Snapshot, x: number)
 export function drawServerWall(p: CanvasPanel, snap: Snapshot): void {
   const g = p.ctx;
   const W = p.width;
-  header(g, W, L("TRẠNG THÁI HỆ THỐNG"));
+  header(g, W, L("HẠ TẦNG & AN NINH STRIX"));
   const sitesOk = snap.sites.filter((s) => s.ok).length;
   const online = snap.machines.filter((m) => m.online).length;
   headerNote(g, W, L("{0}/{1} web ổn · {2}/{3} máy online", sitesOk, snap.sites.length, online, snap.machines.length));
@@ -207,7 +207,7 @@ export function drawReception(p: CanvasPanel, snap: Snapshot): void {
   g.fillStyle = WHITE;
   g.textAlign = "left";
   font(g, 800, 40);
-  g.fillText(L("TRẠNG THÁI WEB"), 28, 56);
+  g.fillText(L("HỆ SINH THÁI DATG CORP & WEB"), 28, 56);
   if (!snap.sites.length) {
     g.fillStyle = MUTED;
     font(g, 600, 30);
@@ -293,7 +293,7 @@ export function drawMeeting(p: CanvasPanel, snap: Snapshot, board: MeetingBoard 
     return;
   }
   const g = p.ctx;
-  header(g, p.width, L("BẢNG DỰ ÁN"));
+  header(g, p.width, L("HỘI ĐỒNG CHIẾN LƯỢC DATG"));
   g.textAlign = "left";
   if (!snap.projects.connected) {
     notConnected(g, 28, 110, snap.projects.note);
@@ -328,7 +328,7 @@ export function drawMeeting(p: CanvasPanel, snap: Snapshot, board: MeetingBoard 
 
 export function drawTraining(p: CanvasPanel, snap: Snapshot): void {
   const g = p.ctx;
-  header(g, p.width, L("THƯ VIỆN SKILL"));
+  header(g, p.width, L("AI LAB & 383+ SKILLS"));
   g.textAlign = "left";
   if (!snap.skills.connected) {
     notConnected(g, 28, 110, snap.skills.note);
@@ -363,7 +363,7 @@ export function drawTraining(p: CanvasPanel, snap: Snapshot): void {
 
 export function drawStorage(p: CanvasPanel, snap: Snapshot): void {
   const g = p.ctx;
-  header(g, p.width, L("BẢN PHÁT HÀNH"));
+  header(g, p.width, L("KHO CÔNG NGHỆ & SIÊU VŨ KHÍ GITHUB"));
   g.textAlign = "left";
   if (!snap.projects.connected) {
     notConnected(g, 28, 110, snap.projects.note);

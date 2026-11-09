@@ -5,7 +5,7 @@ export const CEO_TIMELINE = [
   { state: "reading", duration: 16, label: L("Đọc và duyệt hồ sơ") },
   { state: "coffee", duration: 16, label: L("Uống cà phê") },
   { state: "phone", duration: 14, label: L("Trao đổi qua điện thoại") },
-  { state: "briefing", duration: 14, label: L("Trao đổi với trợ lý Claude") },
+  { state: "briefing", duration: 14, label: L("Hội ý cùng Thư ký trưởng Dicon") },
   { state: "stretching", duration: 10, label: L("Giãn vai và cổ tay") },
   { state: "standing", duration: 4, label: L("Đứng dậy kiểm tra") },
   { state: "walking", duration: 20, label: L("Đi kiểm tra văn phòng") },
