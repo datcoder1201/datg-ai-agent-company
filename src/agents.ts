@@ -756,7 +756,11 @@ export class AgentManager {
     const desk = !walking && !ent.leaving && !ent.cue && !ent.lesson && ent.pose === "sit" && (!ent.target.task || ent.target.task === "type")
       ? this.workstations.find(root => {
         if (this.occupiedWorkstations.has(root)) return false;
-        const seat = root.localToWorld(new THREE.Vector3(0, 0, 0.58));
+        let seat: THREE.Vector3 = root.userData.seatPos;
+        if (!seat) {
+          seat = root.localToWorld(new THREE.Vector3(0, 0, 0.58));
+          root.userData.seatPos = seat;
+        }
         return Math.hypot(seat.x - ent.pos.x, seat.z - ent.pos.z) < 0.2;
       }) : undefined;
     const deskSample = desk ? sampleDeskAction(info.state, t, ent.phase, quiet) : null;

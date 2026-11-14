@@ -1,5 +1,26 @@
 import { defineConfig } from "vite";
 
 export default defineConfig({
-  server: { proxy: { "/api": process.env.MSC_HUB_URL ?? "http://127.0.0.1:5190" } },
+  server: {
+    host: "0.0.0.0",
+    port: 5180,
+    proxy: {
+      "/api": {
+        target: process.env.MSC_HUB_URL ?? "https://office.raumaduongtau.online",
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
+  preview: {
+    host: "0.0.0.0",
+    port: 5180,
+    proxy: {
+      "/api": {
+        target: process.env.MSC_HUB_URL ?? "https://office.raumaduongtau.online",
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
 });
