@@ -76,6 +76,35 @@ const labels = new CSS2DRenderer();
 labels.domElement.className = "labels";
 stage.appendChild(labels.domElement);
 
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0a0e15);
+const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 400);
+camera.position.copy(CAMERA_HOME);
+camera.lookAt(TARGET_HOME);
+
+const controls = new MapControls(camera, renderer.domElement);
+controls.target.copy(TARGET_HOME);
+controls.enableRotate = false;
+controls.screenSpacePanning = false;
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.minZoom = 1;
+controls.maxZoom = 12;
+controls.zoomToCursor = true;
+controls.update();
+
+scene.add(new THREE.HemisphereLight(0xfff1dc, 0x1b2433, 1.15));
+const key = new THREE.DirectionalLight(0xffe3bd, 2.1);
+key.position.set(-22, 60, 34);
+key.castShadow = true;
+key.shadow.mapSize.set(2048, 2048);
+key.shadow.bias = -0.0004;
+Object.assign(key.shadow.camera, { left: -40, right: 40, top: 34, bottom: -34, near: 1, far: 160 });
+scene.add(key);
+const fill = new THREE.DirectionalLight(0x9cc2ff, 0.45);
+fill.position.set(30, 30, -20);
+scene.add(fill);
+
 function applyPerfMode(): void {
   const ratio = isTurbo ? 1.0 : Math.min(devicePixelRatio, 1.5);
   renderer.setPixelRatio(ratio);
@@ -107,35 +136,6 @@ if (perfToggle) {
     applyPerfMode();
   });
 }
-
-const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x0a0e15);
-const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 400);
-camera.position.copy(CAMERA_HOME);
-camera.lookAt(TARGET_HOME);
-
-const controls = new MapControls(camera, renderer.domElement);
-controls.target.copy(TARGET_HOME);
-controls.enableRotate = false;
-controls.screenSpacePanning = false;
-controls.enableDamping = true;
-controls.dampingFactor = 0.08;
-controls.minZoom = 1;
-controls.maxZoom = 12;
-controls.zoomToCursor = true;
-controls.update();
-
-scene.add(new THREE.HemisphereLight(0xfff1dc, 0x1b2433, 1.15));
-const key = new THREE.DirectionalLight(0xffe3bd, 2.1);
-key.position.set(-22, 60, 34);
-key.castShadow = true;
-key.shadow.mapSize.set(2048, 2048);
-key.shadow.bias = -0.0004;
-Object.assign(key.shadow.camera, { left: -40, right: 40, top: 34, bottom: -34, near: 1, far: 160 });
-scene.add(key);
-const fill = new THREE.DirectionalLight(0x9cc2ff, 0.45);
-fill.position.set(30, 30, -20);
-scene.add(fill);
 
 const EDGE_MARGIN = 1.2;
 const REBUILD_THRESHOLD = 0.03;
