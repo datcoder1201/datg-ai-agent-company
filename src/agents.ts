@@ -560,9 +560,16 @@ export class AgentManager {
       .filter((ent) => !ent.leaving && !crewKind(ent.info.id) && !ent.target.key.startsWith("lounge:") && ent.label.style.display !== "none")
       .sort((a, b) => a.info.id.localeCompare(b.info.id));
     const blend = reducedMotion() ? 1 : 1 - Math.exp(-LABEL_EASE * dt);
-    for (const [index, ent] of entities.entries()) {
+
+    // Phase 1: Batch READ all bounding rects in one pass to eliminate synchronous layout thrashing
+    const items = entities.map((ent, index) => {
       ent.tag.renderOrder = 10000 + entities.length - index + (ent.info.id === this.focusId ? 10000 : 0);
-      const rect = ent.label.getBoundingClientRect();
+      return { ent, rect: ent.label.getBoundingClientRect() };
+    });
+
+    // Phase 2: Compute slots and offsets in memory
+    const updates: { ent: Entity; x: number; y: number }[] = [];
+    for (const { ent, rect } of items) {
       const baseLeft = rect.left - ent.labelOffset.x;
       const baseTop = rect.top - ent.labelOffset.y;
       const anchorX = baseLeft + rect.width / 2;
@@ -580,8 +587,7 @@ export class AgentManager {
       ent.labelOffset = !shown || blocked ? { x: goalX, y: goalY } : next;
       ent.labelOffset.x = Math.round(ent.labelOffset.x * 64) / 64;
       ent.labelOffset.y = Math.round(ent.labelOffset.y * 64) / 64;
-      ent.label.style.marginLeft = `${ent.labelOffset.x}px`;
-      ent.label.style.marginTop = `${ent.labelOffset.y}px`;
+      updates.push({ ent, x: ent.labelOffset.x, y: ent.labelOffset.y });
       const left = baseLeft + goalX;
       const top = baseTop + goalY;
       placed.push({ left, top, right: left + rect.width, bottom: top + rect.height });
@@ -590,6 +596,12 @@ export class AgentManager {
         const currentTop = baseTop + ent.labelOffset.y;
         placed.push({ left: currentLeft, top: currentTop, right: currentLeft + rect.width, bottom: currentTop + rect.height });
       }
+    }
+
+    // Phase 3: Batch WRITE styles in one single pass
+    for (const u of updates) {
+      u.ent.label.style.marginLeft = `${u.x}px`;
+      u.ent.label.style.marginTop = `${u.y}px`;
     }
   }
 

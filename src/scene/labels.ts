@@ -58,20 +58,10 @@ function displayTexture(source: HTMLCanvasElement): THREE.CanvasTexture {
 }
 
 function downscale(source: HTMLCanvasElement, target: HTMLCanvasElement): void {
-  let current: HTMLCanvasElement = source;
-  while (current.width / 2 >= target.width) {
-    const half = document.createElement("canvas");
-    half.width = Math.round(current.width / 2);
-    half.height = Math.round(current.height / 2);
-    const g = half.getContext("2d")!;
-    g.imageSmoothingQuality = "high";
-    g.drawImage(current, 0, 0, half.width, half.height);
-    current = half;
-  }
   const g = target.getContext("2d")!;
   g.imageSmoothingQuality = "high";
   g.clearRect(0, 0, target.width, target.height);
-  g.drawImage(current, 0, 0, target.width, target.height);
+  g.drawImage(source, 0, 0, target.width, target.height);
 }
 
 export class CanvasPanel {

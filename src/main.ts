@@ -82,7 +82,7 @@ const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 400);
 camera.position.copy(CAMERA_HOME);
 camera.lookAt(TARGET_HOME);
 
-const controls = new MapControls(camera, renderer.domElement);
+const controls = new MapControls(camera, stage);
 controls.target.copy(TARGET_HOME);
 controls.enableRotate = false;
 controls.screenSpacePanning = false;
@@ -802,11 +802,14 @@ renderer.setAnimationLoop(() => {
   controls.update();
   renderer.render(scene, camera);
   labelTimer += dt;
-  if (labelTimer >= 0.05) {
+  const isInteracting = flight !== null || (controls as any).state !== -1;
+  if (!isInteracting && labelTimer >= 0.05) {
     fitScreens();
     tvLayer.render(tvScene, camera);
     labels.render(scene, camera);
     agents.layoutLabels(innerWidth, innerHeight, labelTimer, [office.ceo.speechBubble]);
     labelTimer = 0;
+  } else if (isInteracting) {
+    labels.render(scene, camera);
   }
 });
