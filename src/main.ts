@@ -118,6 +118,8 @@ const controls = new MapControls(camera, renderer.domElement);
 controls.target.copy(TARGET_HOME);
 controls.enableRotate = false;
 controls.screenSpacePanning = false;
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
 controls.minZoom = 1;
 controls.maxZoom = 12;
 controls.zoomToCursor = true;
