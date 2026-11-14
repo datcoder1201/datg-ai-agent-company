@@ -87,7 +87,7 @@ controls.target.copy(TARGET_HOME);
 controls.enableRotate = false;
 controls.screenSpacePanning = false;
 controls.enableDamping = true;
-controls.dampingFactor = 0.08;
+controls.dampingFactor = 0.12;
 controls.minZoom = 1;
 controls.maxZoom = 12;
 controls.zoomToCursor = true;
@@ -97,7 +97,7 @@ scene.add(new THREE.HemisphereLight(0xfff1dc, 0x1b2433, 1.15));
 const key = new THREE.DirectionalLight(0xffe3bd, 2.1);
 key.position.set(-22, 60, 34);
 key.castShadow = true;
-key.shadow.mapSize.set(2048, 2048);
+key.shadow.mapSize.set(1024, 1024);
 key.shadow.bias = -0.0004;
 Object.assign(key.shadow.camera, { left: -40, right: 40, top: 34, bottom: -34, near: 1, far: 160 });
 scene.add(key);
@@ -765,8 +765,9 @@ let screenFitKey = "";
 const screenScale = new THREE.Vector3();
 
 function fitScreens(): void {
+  if (flight) return;
   const pxPerUnit = (renderer.domElement.height * camera.zoom) / (camera.top - camera.bottom);
-  const key = `${pxPerUnit.toFixed(2)}:${office.screens.length}`;
+  const key = `${pxPerUnit.toFixed(1)}:${office.screens.length}`;
   if (key === screenFitKey) return;
   screenFitKey = key;
   for (const mesh of office.screens) {
@@ -801,7 +802,7 @@ renderer.setAnimationLoop(() => {
   controls.update();
   renderer.render(scene, camera);
   labelTimer += dt;
-  if (labelTimer >= 0.033) {
+  if (labelTimer >= 0.05) {
     fitScreens();
     tvLayer.render(tvScene, camera);
     labels.render(scene, camera);

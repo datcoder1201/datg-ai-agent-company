@@ -115,6 +115,10 @@ function updateTraySupport(root: THREE.Object3D, tray: THREE.Group): void {
 export function resetWorkstation(root: THREE.Object3D, t: number, quiet = false): void {
   const rig = root.userData.workstation as WorkstationRig | undefined;
   if (!rig) return;
+  if (root.userData.deskAction === "vacant" && !root.userData.trayDirty) {
+    rig.fans.forEach((fan, index) => { fan.rotation.z = quiet ? 0 : t * (3.8 + index * 0.3); });
+    return;
+  }
   const home = workstationHome(root, rig);
   for (const [object, position] of home.positions) object.position.copy(position);
   for (const [object, rotation] of home.rotations) object.rotation.copy(rotation);
@@ -130,6 +134,7 @@ export function resetWorkstation(root: THREE.Object3D, t: number, quiet = false)
   rig.fans.forEach((fan, index) => { fan.rotation.z = quiet ? 0 : t * (3.8 + index * 0.3); });
   root.userData.deskAction = "vacant";
   root.userData.deskOccupant = null;
+  root.userData.trayDirty = false;
   for (const tray of [rig.keyboardTray, rig.mouseTray, ...(rig.cupTray ? [rig.cupTray] : []), ...(rig.footrest ? [rig.footrest] : [])]) updateTraySupport(root, tray);
 }
 
@@ -137,6 +142,7 @@ export function animateWorkstation(root: THREE.Object3D, mascot: Mascot, sample:
   const rig = root.userData.workstation as WorkstationRig | undefined;
   if (!rig) return;
   const home = workstationHome(root, rig);
+  root.userData.trayDirty = true;
   root.userData.deskAction = sample.action;
   root.userData.deskOccupant = occupant;
   rig.chairSeat.rotation.y += sample.yaw * 0.5;
